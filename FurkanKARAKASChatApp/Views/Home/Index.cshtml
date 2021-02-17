@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FurkanKARAKASChatApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.3/signalr.min.js" integrity="sha512-BGCnhut2nqTXaIMb8DaUQ7tmjj0qjDTAwqrQuXV09qQDoltaE5N4hgr5r74biIYR8E8RHm8817isyWgjSMysFw==" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">FurkanKARAKASChatApp</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h6>Sohbet Geçmişi</h6>
+                    <div id="Div_Message" style=" height: 800px; max-height: 600px; border: 1px solid; overflow: auto; " class="col-sm-12">
+
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <h6>Sohbet Odaları</h6>
+                    <ul class="list-group">
+                        <li onclick="JoinChatRoom('a25564d2-50a1-4e26-a9bd-168674074817')" id="GuncelFilmler" class="list-group-item">Güncel Filmler</li>
+                        <li onclick="JoinChatRoom('6072ff7a-5e30-41e9-a83a-215d570066ef')" id="Futbol" class="list-group-item">Futbol</li>
+                        <li onclick="JoinChatRoom('4a287be2-cca2-4042-8c37-d0487706d6d1')" id="Gundem" class="list-group-item">Gündem</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <textarea disabled id="TxtMessage" placeholder="Mesaj Giriniz." rows="4" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div style="padding:0px!important;" class="col-sm-8">
+                    <button disabled id="BtnSend" onclick="SendMessage()" style="float:right" class="btn btn-info col-sm-4">Gönder</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - FurkanKARAKASChatApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="Modal_NickName" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Kullanıcı Adı Girişi</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Kullanıcı Adınızı Giriniz:</label>
+                        <input type="text" class="form-control" id="Txt_NickName" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>*@
+                    <button type="button" onclick="SaveNickName()" class="btn btn-primary">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+</body>
+</html>
+<script>
+    var UserNickName = '';
+    var ChatRoomUsersId;
+    var RoomId;
+    $(document).ready(function () {
+        if (UserNickName == '') {
+            $('#Modal_NickName').modal({ backdrop: 'static', keyboard: false });
+        }
+        setupConnection();
+    });
+
+    function SaveNickName() {
+        UserNickName = $('#Txt_NickName').val();
+        $('#Modal_NickName').modal('hide');
+    }
+
+    function JoinChatRoom(RoomId) {
+        this.RoomId = RoomId;
+        $.post("/Home/JoinChatRoom", { RoomId: RoomId, UserNickName: UserNickName },
+            function (data, textStatus, jqXHR) {
+                if (data.success) {
+                    ChatRoomUsersId = data.chatRoomUsersId;
+                    RefreshMessageDiv(this.RoomId);
+                    $('#BtnSend').attr('disabled', false);
+                    $('#TxtMessage').attr('disabled', false);
+                }
+            }
+        );
+    }
+
+    function SendMessage() {
+        var Message = $('#TxtMessage').val();
+        $.post("/Home/SendMessage", { RoomId: this.RoomId, ChatRoomUsersId: this.ChatRoomUsersId, Message: Message },
+            function (data, textStatus, jqXHR) {
+                RefreshMessageDiv(this.RoomId);
+                $('#TxtMessage').val("");
+            }
+        );
+    }
+
+    function RefreshMessageDiv() {
+        $.post("/Home/GetRoomMessage", { RoomId: this.RoomId },
+            function (data, textStatus, jqXHR) {
+                if (data.chatRoomId == this.RoomId) {
+                    $('#Div_Message').empty();
+                    $.each(data, function (indexInArray, valueOfElement) {
+                        $('#Div_Message').append('<div class="row"> <label style="float:left;">' + valueOfElement.message + ' / ' + valueOfElement.chatRoomUsers.userNickName + ' / ' + valueOfElement.sendDate + '</label> </div>');
+                    });
+                }
+            }
+        );
+    }
+
+    function setupConnection() {
+        var connection = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
+        connection.on("GetAllMessage", function (chatMessage) {
+            console.log({ chatMessage });
+            debugger;
+            if (chatMessage.chatRoomId == RoomId) {
+                RefreshMessageDiv();
+            }
+        });
+        connection.start().catch(err => console.error(err.toString())).then(response => console.log("connected"));
+    }
+
+    $('li').click(function (el) {
+       $('li').css('background-color','transparent')
+       $($(el)[0].target).css('background-color','#31d2e2')
+    })
+</script>

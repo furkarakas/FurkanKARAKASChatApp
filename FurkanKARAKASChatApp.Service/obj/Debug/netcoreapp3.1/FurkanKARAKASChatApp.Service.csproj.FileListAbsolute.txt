@@ -1,0 +1,12 @@
+C:\Users\Faydam\source\repos\FurkanKARAKASChatApp\FurkanKARAKASChatApp.Service\bin\Debug\netcoreapp3.1\FurkanKARAKASChatApp.Service.deps.json
+C:\Users\Faydam\source\repos\FurkanKARAKASChatApp\FurkanKARAKASChatApp.Service\bin\Debug\netcoreapp3.1\FurkanKARAKASChatApp.Service.dll
+C:\Users\Faydam\source\repos\FurkanKARAKASChatApp\FurkanKARAKASChatApp.Service\bin\Debug\netcoreapp3.1\FurkanKARAKASChatApp.Service.pdb
+C:\Users\Faydam\source\repos\FurkanKARAKASChatApp\FurkanKARAKASChatApp.Service\bin\Debug\netcoreapp3.1\FurkanKARAKASChatApp.Model.dll
+C:\Users\Faydam\source\repos\FurkanKARAKASChatApp\FurkanKARAKASChatApp.Service\bin\Debug\netcoreapp3.1\FurkanKARAKASChatApp.Model.pdb
+C:\Users\Faydam\source\repos\FurkanKARAKASChatApp\FurkanKARAKASChatApp.Service\obj\Debug\netcoreapp3.1\FurkanKARAKASChatApp.Service.csprojAssemblyReference.cache
+C:\Users\Faydam\source\repos\FurkanKARAKASChatApp\FurkanKARAKASChatApp.Service\obj\Debug\netcoreapp3.1\FurkanKARAKASChatApp.Service.AssemblyInfoInputs.cache
+C:\Users\Faydam\source\repos\FurkanKARAKASChatApp\FurkanKARAKASChatApp.Service\obj\Debug\netcoreapp3.1\FurkanKARAKASChatApp.Service.AssemblyInfo.cs
+C:\Users\Faydam\source\repos\FurkanKARAKASChatApp\FurkanKARAKASChatApp.Service\obj\Debug\netcoreapp3.1\FurkanKARAKASChatApp.Service.csproj.CoreCompileInputs.cache
+C:\Users\Faydam\source\repos\FurkanKARAKASChatApp\FurkanKARAKASChatApp.Service\obj\Debug\netcoreapp3.1\FurkanKARAKASChatApp.Service.csproj.CopyComplete
+C:\Users\Faydam\source\repos\FurkanKARAKASChatApp\FurkanKARAKASChatApp.Service\obj\Debug\netcoreapp3.1\FurkanKARAKASChatApp.Service.dll
+C:\Users\Faydam\source\repos\FurkanKARAKASChatApp\FurkanKARAKASChatApp.Service\obj\Debug\netcoreapp3.1\FurkanKARAKASChatApp.Service.pdb
